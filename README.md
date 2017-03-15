@@ -1,2 +1,2 @@
-# 5cardstud
-Ohjelmoinnin harjoitustyö
+﻿# 5cardstud
+Ohjelmoinnin harjoitustyö kevät 2017
