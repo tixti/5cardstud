@@ -1,0 +1,2 @@
+# 5cardstud
+Ohjelmoinnin harjoitustyö
