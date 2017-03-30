@@ -5,3 +5,4 @@ Päivä | Tunnit | Kuvaus
 16.03.2017 | 0.5h | Dokumentaatiota, labtooliin rekisteröinti
 20.03.2017 | 3h | Ohjelmoinnin aloittaminen
 23.03.2017 | 2h | Ohjelmointia, testien tekoa, dokumentaatiota
+30.03.2017 | 4h | Ohjelmointia, raporttien generointia
