@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package fivecardstud.logic;
 
-import logic.Card;
-import logic.Deck;
+import fivecardstud.logic.Card;
+import fivecardstud.logic.Deck;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertFalse;

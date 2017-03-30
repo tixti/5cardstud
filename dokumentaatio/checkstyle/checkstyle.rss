@@ -19,14 +19,14 @@ under the License.
 -->
 <rss version="0.91">
   <channel>
-    <title>5cardstud - Checkstyle report</title>
+    <title>fivecardstud - Checkstyle report</title>
     <link>${project.url}</link>
-    <description>5cardstud - Checkstyle report</description>
+    <description>fivecardstud - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2017</copyright>
     <item>
-      <title>File: 3,
-             Errors: 1,
+      <title>File: 4,
+             Errors: 7,
              Warnings: 0,
              Infos: 0
       </title>
@@ -46,7 +46,21 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#logic.Card.java">logic/Card.java</a>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Hand.java">fivecardstud/logic/Hand.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Card.java">fivecardstud/logic/Card.java</a>
                 </td>
                 <td>
                   0
@@ -69,12 +83,12 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  7
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#logic.Deck.java">logic/Deck.java</a>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Deck.java">fivecardstud/logic/Deck.java</a>
                 </td>
                 <td>
                   0

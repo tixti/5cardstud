@@ -1,7 +1,7 @@
-package logic;
+package fivecardstud.logic;
 
 
-import logic.Card;
+import fivecardstud.logic.Card;
 
 /**
  *  An object of type Deck represents a deck of playing cards.  The deck
