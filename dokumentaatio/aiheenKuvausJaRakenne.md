@@ -2,4 +2,4 @@
 - **Käyttäjät:** Pelaaja
 - **Käyttäjän toiminnot:** Pelin pelaaminen, mahdollisesti highscore-taulukon selaaminen.
 
-![Alt text](/dokumentaatio/luokkakaavio.png)
+![Alt text](/dokumentaatio/luokkakaavio2.png)
