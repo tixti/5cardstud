@@ -3,6 +3,11 @@ import fivecardstud.logic.Deck;
 import java.util.ArrayList;
 import javax.swing.JTextField;
 import fivecardstud.logic.Card;
+import fivecardstud.logic.Hand;
+import java.awt.Color;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +28,8 @@ public class CardStudGUI extends javax.swing.JFrame {
 
     public CardStudGUI() {
         initComponents();
-        
+        card2.setVisible(false);
+        messageField.setVisible(false);
         cardFields.add(card1);
         cardFields.add(card2);
         cardFields.add(card3);
@@ -33,17 +39,14 @@ public class CardStudGUI extends javax.swing.JFrame {
         cardFields.add(card7);
         cardFields.add(card8);
         cardFields.add(card9);
-        cardFields.add(card10);
-           
+        cardFields.add(card10);         
         Deck deck = new Deck();       
         deck.shuffle();
         potSizeField.setText("" + 2);
-        playerChipField.setText("" + 100);
-        AIChipField.setText("" + 100);      
-        card1.setText(deck.dealCard().toString());
-        card2.setText(deck.dealCard().toString());
-        card3.setText(deck.dealCard().toString());
-        card4.setText(deck.dealCard().toString());
+        playerChipField.setText("" + 99);
+        AIChipField.setText("" + 99);       
+        drawTwoCards();
+        drawTwoCards();
         drawButton.setVisible(false);
     }
 
@@ -57,7 +60,7 @@ public class CardStudGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         drawButton = new javax.swing.JButton();
-        card2 = new javax.swing.JTextField();
+        hiddenCard = new javax.swing.JTextField();
         card4 = new javax.swing.JTextField();
         card6 = new javax.swing.JTextField();
         card8 = new javax.swing.JTextField();
@@ -73,6 +76,8 @@ public class CardStudGUI extends javax.swing.JFrame {
         checkButton = new javax.swing.JButton();
         foldButton = new javax.swing.JButton();
         betButton = new javax.swing.JButton();
+        card2 = new javax.swing.JTextField();
+        messageField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("5CardStud");
@@ -84,7 +89,13 @@ public class CardStudGUI extends javax.swing.JFrame {
             }
         });
 
-        card2.setEditable(false);
+        hiddenCard.setEditable(false);
+        hiddenCard.setBackground(new java.awt.Color(153, 153, 153));
+        hiddenCard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hiddenCardActionPerformed(evt);
+            }
+        });
 
         card4.setEditable(false);
 
@@ -95,6 +106,7 @@ public class CardStudGUI extends javax.swing.JFrame {
         card10.setEditable(false);
 
         card1.setEditable(false);
+        card1.setBackground(new java.awt.Color(204, 204, 204));
 
         card3.setEditable(false);
 
@@ -135,73 +147,91 @@ public class CardStudGUI extends javax.swing.JFrame {
         });
 
         betButton.setBackground(new java.awt.Color(51, 204, 0));
-        betButton.setText("Bet");
+        betButton.setText("Bet 1");
+        betButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                betButtonActionPerformed(evt);
+            }
+        });
+
+        messageField.setEditable(false);
+        messageField.setBackground(new java.awt.Color(228, 228, 228));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(card4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(card6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(card8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(card10, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AIChipField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                            .addComponent(foldButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(messageField, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(potSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(157, 157, 157))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                    .addComponent(foldButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(card5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(card7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(73, 73, 73)
+                                        .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(betButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(card5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(card9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(playerChipField))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(20, 20, 20))))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(hiddenCard, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(card7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(betButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(card4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(card9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(card6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(playerChipField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)))))
-                .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(potSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(157, 157, 157))
+                                .addComponent(card8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(card10, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AIChipField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hiddenCard, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card8, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card10, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AIChipField, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
-                .addComponent(potSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(potSizeField, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(messageField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,28 +247,41 @@ public class CardStudGUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(foldButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(betButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                            .addComponent(betButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 9, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
+    
         Deck deck = new Deck();
         deck.shuffle();
+        for (JTextField f: cardFields) {
+            f.setText("");
+        }
+        hiddenCard.setText("");
+        try {
+            Thread.sleep(250);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        messageField.setVisible(false);
         potSizeField.setText("" + 2);
         int playerChipCount = Integer.parseInt(playerChipField.getText()) - 1;
         int AIChipCount = Integer.parseInt(AIChipField.getText()) - 1;
         playerChipField.setText("" + playerChipCount);
         AIChipField.setText("" + AIChipCount);
-        card1.setText(deck.dealCard().toString());
-        card3.setText(deck.dealCard().toString());
-        card2.setText(deck.dealCard().toString());
-        card4.setText(deck.dealCard().toString());
+        card1.setBackground(Color.LIGHT_GRAY);
+        hiddenCard.setBackground(Color.GRAY);
+        drawTwoCards();
+        drawTwoCards();
         drawButton.setVisible(false);
         foldButton.setVisible(true);
         checkButton.setVisible(true);
@@ -254,17 +297,7 @@ public class CardStudGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         int AIChipCount = Integer.parseInt(AIChipField.getText()) + Integer.parseInt(potSizeField.getText());
         AIChipField.setText("" + AIChipCount);
-        potSizeField.setText("");
-        card1.setText("");
-        card3.setText("");
-        card5.setText("");
-        card7.setText("");
-        card9.setText("");
-        card2.setText("");
-        card4.setText("");
-        card6.setText("");
-        card8.setText("");
-        card10.setText("");       
+        potSizeField.setText("");   
         drawButton.setVisible(true);
         foldButton.setVisible(false);
         checkButton.setVisible(false);
@@ -273,31 +306,46 @@ public class CardStudGUI extends javax.swing.JFrame {
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
         // TODO add your handling code here:
-        if (card10.getText().isEmpty()) {
-            Deck deck = new Deck();
-            deck.shuffle();
-            ArrayList<String> usedCards = new ArrayList();
-            int i = 2;
-            for (JTextField field : cardFields) {
-                if (!field.getText().isEmpty()) {
-                    usedCards.add(field.getText());
-                } else {
-                    if (i > 0) {
-                        while (true) {
-                            Card card = deck.dealCard();
-                            if (!usedCards.contains(card.toString())) {
-                                field.setText(card.toString());
-                                break;
-                            }
-                        }                   
-                        i--;
-                    }
-                }           
-            }
+        try {
+            Thread.sleep(75);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
-        
-        
+        if (card10.getText().isEmpty()) {         
+            drawTwoCards();
+        } else {
+            handleTheEndOfHand();
+        }             
     }//GEN-LAST:event_checkButtonActionPerformed
+
+    private void betButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_betButtonActionPerformed
+        try {
+            Thread.sleep(75);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        // TODO add your handling code here:
+        int potSize = Integer.parseInt(potSizeField.getText());
+        int AIChips = Integer.parseInt(AIChipField.getText());
+        int playerChips = Integer.parseInt(playerChipField.getText());
+        int bet = Integer.parseInt(potSizeField.getText()) / 2;
+        potSize += bet * 2;
+        AIChips -= bet;
+        playerChips -= bet;
+        playerChipField.setText("" + playerChips);
+        AIChipField.setText("" + AIChips);
+        potSizeField.setText("" + potSize);
+        betButton.setText("Bet " + (potSize / 2));
+        if (card10.getText().isEmpty()) {                     
+            drawTwoCards();
+        } else {          
+            handleTheEndOfHand();
+        }  
+    }//GEN-LAST:event_betButtonActionPerformed
+
+    private void hiddenCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hiddenCardActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hiddenCardActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,6 +381,100 @@ public class CardStudGUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void handleTheEndOfHand() {    
+            try {
+                Thread.sleep(200);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            Card AICard1 = new Card(card2.getText());
+            Card AICard2 = new Card(card4.getText());
+            Card AICard3 = new Card(card6.getText());
+            Card AICard4 = new Card(card8.getText());
+            Card AICard5 = new Card(card10.getText());
+            Hand AIHand = new Hand(AICard1, AICard2, AICard3, AICard4, AICard5);
+            Card playerCard1 = new Card(card1.getText());
+            Card playerCard2 = new Card(card3.getText());
+            Card playerCard3 = new Card(card5.getText());
+            Card playerCard4 = new Card(card7.getText());
+            Card playerCard5 = new Card(card9.getText());
+            Hand playerHand = new Hand(playerCard1, playerCard2, playerCard3, playerCard4, playerCard5);    
+            messageField.setVisible(true);
+            if (playerHand.compareTo(AIHand) > 0) {
+                int playerChips = Integer.parseInt(playerChipField.getText());
+                playerChips += Integer.parseInt(potSizeField.getText());
+                playerChipField.setText("" + playerChips);
+                messageField.setText("Player wins");
+            } else if (playerHand.compareTo(AIHand) < 0) {
+                int AIChips = Integer.parseInt(AIChipField.getText());
+                AIChips += Integer.parseInt(potSizeField.getText());
+                AIChipField.setText("" + AIChips);
+                messageField.setText("AI wins");
+            } else {
+                int playerChips = Integer.parseInt(playerChipField.getText());
+                playerChips += Integer.parseInt(potSizeField.getText()) / 2;
+                playerChipField.setText("" + playerChips);
+                int AIChips = Integer.parseInt(AIChipField.getText());
+                AIChips += Integer.parseInt(potSizeField.getText()) / 2;
+                AIChipField.setText("" + AIChips);
+                messageField.setText("Tie");
+            }
+            hiddenCard.setText(card2.getText());
+            if (hiddenCard.getText().contains("Hearts")) {
+                hiddenCard.setForeground(Color.red);
+            } else if (hiddenCard.getText().contains("Diamonds")) {
+                hiddenCard.setForeground(Color.blue);
+            } else if (hiddenCard.getText().contains("Clubs")) {
+                hiddenCard.setForeground(Color.green);
+            } else {
+                hiddenCard.setForeground(Color.BLACK);
+            }
+            hiddenCard.setBackground(Color.WHITE);
+            card1.setBackground(Color.WHITE);        
+            betButton.setText("Bet 1");            
+            drawButton.setVisible(true);
+            foldButton.setVisible(false);
+            checkButton.setVisible(false);
+            betButton.setVisible(false);
+    }
+    
+    public void drawTwoCards() {
+        Deck deck = new Deck();
+            deck.shuffle();
+            ArrayList<String> usedCards = new ArrayList();
+            int i = 2;
+            for (JTextField field : cardFields) {
+                if (!field.getText().isEmpty()) {
+                    usedCards.add(field.getText());
+                } else {
+                    if (i > 0) {
+                        while (true) {
+                            Card card = deck.dealCard();
+                            if (!usedCards.contains(card.toString())) {
+                                field.setText(card.toString());
+                                break;
+                            }
+                        }                   
+                        i--;
+                    }
+                }   
+                if (field.getText().contains("Hearts")) {
+                    field.setForeground(Color.red);
+                } else if (field.getText().contains("Diamonds")) {
+                    field.setForeground(Color.blue);
+                } else if (field.getText().contains("Clubs")) {
+                    field.setForeground(Color.green);
+                } else {
+                    field.setForeground(Color.BLACK);
+                }
+                
+            }
+    }
+    
+    public void setCardColor() {
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AIChipField;
@@ -350,6 +492,8 @@ public class CardStudGUI extends javax.swing.JFrame {
     private javax.swing.JButton checkButton;
     private javax.swing.JButton drawButton;
     private javax.swing.JButton foldButton;
+    private javax.swing.JTextField hiddenCard;
+    private javax.swing.JTextField messageField;
     private javax.swing.JTextField playerChipField;
     private javax.swing.JTextField potSizeField;
     // End of variables declaration//GEN-END:variables

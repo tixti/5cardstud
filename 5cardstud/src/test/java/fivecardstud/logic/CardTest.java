@@ -5,21 +5,15 @@
  */
 package fivecardstud.logic;
 
-import fivecardstud.logic.Card;
-import fivecardstud.logic.Deck;
-import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
  *
  * @author Omistaja
  */
-public class FiveCardStudTest {
+public class CardTest {
     
     @Test
     public void cardSuit4ShouldBeHearts() {
@@ -70,21 +64,35 @@ public class FiveCardStudTest {
     }    
     
     @Test
-    public void deckHas52Cards() {
-        Deck deck = new Deck();
-        assertTrue(deck.getDeck().length == 52);
+    public void aceIsBiggerThanJack() {
+        Card ace = new Card(14, 2);
+        Card jack = new Card(11, 3);
+        assertTrue(ace.compareTo(jack) > 0);
     }
     
     @Test
-    public void deckHasNoDuplicates() {
-        Deck deck = new Deck();
-        List<Card> usedCards = new ArrayList();
-        for (int i = 0; i < 52; i++) {
-            Card card = deck.dealCard();
-            if (usedCards.contains(card)) {
-                fail();
-            }
-            usedCards.add(card);
-        }
+    public void queenIsEqualToQueen() {
+        Card queenOfHearts = new Card(12, 4);
+        Card queenOfDiamonds = new Card(12, 3);
+        assertTrue(queenOfHearts.compareTo(queenOfDiamonds) == 0);
+    }
+    
+    @Test 
+    public void sevenIsSmallerThanKing() {
+        Card seven = new Card(7, 1);
+        Card king = new Card(13, 1);
+        assertTrue(seven.compareTo(king) < 0);
+    }
+    
+    @Test
+    public void cardAsTextConstructorWorks() {
+        String ace = "Ace of Hearts";
+        Card aceOfHearts = new Card(ace);
+        assertTrue(aceOfHearts.getSuit() == 4);
+        assertTrue(aceOfHearts.getValue() == 14);
+        String nine = "9 of Diamonds";
+        Card nineOfDiamonds = new Card(nine);
+        assertTrue(nineOfDiamonds.getSuit() == 3);
+        assertTrue(nineOfDiamonds.getValue() == 9);
     }
 }

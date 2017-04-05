@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2017</copyright>
     <item>
-      <title>File: 4,
-             Errors: 7,
+      <title>File: 14,
+             Errors: 5,
              Warnings: 0,
              Infos: 0
       </title>
@@ -46,7 +46,147 @@ under the License.
           <tbody>
                           <tr>
                 <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Straight.java">fivecardstud/logic/Straight.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.FullHouse.java">fivecardstud/logic/FullHouse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.HighCard.java">fivecardstud/logic/HighCard.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Pair.java">fivecardstud/logic/Pair.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#CardStudGUI.java">CardStudGUI.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.FourOfAKind.java">fivecardstud/logic/FourOfAKind.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Rank.java">fivecardstud/logic/Rank.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.StraightFlush.java">fivecardstud/logic/StraightFlush.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Flush.java">fivecardstud/logic/Flush.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="${project.url}/checkstyle.html#fivecardstud.logic.Hand.java">fivecardstud/logic/Hand.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.TwoPair.java">fivecardstud/logic/TwoPair.java</a>
                 </td>
                 <td>
                   0
@@ -74,7 +214,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#CardStudGUI.java">CardStudGUI.java</a>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Deck.java">fivecardstud/logic/Deck.java</a>
                 </td>
                 <td>
                   0
@@ -83,12 +223,12 @@ under the License.
                   0
                 </td>
                 <td>
-                  7
+                  0
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.Deck.java">fivecardstud/logic/Deck.java</a>
+                  <a href="${project.url}/checkstyle.html#fivecardstud.logic.ThreeOfAKind.java">fivecardstud/logic/ThreeOfAKind.java</a>
                 </td>
                 <td>
                   0
