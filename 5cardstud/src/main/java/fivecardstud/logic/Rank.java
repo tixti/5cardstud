@@ -1,14 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fivecardstud.logic;
 
 /**
- *
- * @author Omistaja
+ * Rajapinta eriarvoisille pokerikäsille.
  */
 public interface Rank {
+
+    /**
+     * Antaa mahdollisuuden vertailla eriarvoisia pokerikäsiä palauttaen
+     * suuremman arvon paremmalle pokerikädelle verrattuna huonompaan.
+     *
+     * @return käden arvo numerona.
+     */
     int rankAsNumber();
+
+    /**
+     * Vertaa kahta pokerikättä toisiinsa.
+     * @param r toinen pokerikäsi
+     * @return kertoo onko käsi parempi vai huonompi
+     */
+    int compareTo(Rank r);
 }

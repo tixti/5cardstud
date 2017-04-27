@@ -5,25 +5,17 @@ import javax.swing.JTextField;
 import fivecardstud.logic.Card;
 import fivecardstud.logic.Hand;
 import java.awt.Color;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-/**
- *
- * @author Omistaja
- */
-public class CardStudGUI extends javax.swing.JFrame {
+public final class CardStudGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form CardStudGUI
-     */   
+     */
     ArrayList<JTextField> cardFields = new ArrayList();
 
     public CardStudGUI() {
@@ -39,12 +31,12 @@ public class CardStudGUI extends javax.swing.JFrame {
         cardFields.add(card7);
         cardFields.add(card8);
         cardFields.add(card9);
-        cardFields.add(card10);         
-        Deck deck = new Deck();       
+        cardFields.add(card10);
+        Deck deck = new Deck();
         deck.shuffle();
         potSizeField.setText("" + 2);
-        playerChipField.setText("" + 99);
-        AIChipField.setText("" + 99);       
+        playerChipField.setText("" + 49);
+        AIChipField.setText("" + 49);
         drawTwoCards();
         drawTwoCards();
         drawButton.setVisible(false);
@@ -260,33 +252,40 @@ public class CardStudGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-    
+
         Deck deck = new Deck();
         deck.shuffle();
-        for (JTextField f: cardFields) {
+        for (JTextField f : cardFields) {
             f.setText("");
+            f.setBackground(Color.white);
         }
         hiddenCard.setText("");
         try {
             Thread.sleep(250);
-        } catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
         messageField.setVisible(false);
         potSizeField.setText("" + 2);
         int playerChipCount = Integer.parseInt(playerChipField.getText()) - 1;
         int AIChipCount = Integer.parseInt(AIChipField.getText()) - 1;
+        if (drawButton.getText().equals("New game")) {
+            drawButton.setText("Draw");
+            playerChipCount = 19;
+            AIChipCount = 19;
+        }
         playerChipField.setText("" + playerChipCount);
         AIChipField.setText("" + AIChipCount);
         card1.setBackground(Color.LIGHT_GRAY);
         hiddenCard.setBackground(Color.GRAY);
         drawTwoCards();
         drawTwoCards();
-        drawButton.setVisible(false);
-        foldButton.setVisible(true);
+        drawButton.setVisible(false);     
         checkButton.setVisible(true);
-        betButton.setVisible(true);
-            // TODO add your handling code here:
+        if (playerChipCount > 0 && AIChipCount > 0) {
+            betButton.setVisible(true);
+            foldButton.setVisible(true);
+        }
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void card5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_card5ActionPerformed
@@ -295,52 +294,75 @@ public class CardStudGUI extends javax.swing.JFrame {
 
     private void foldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foldButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            Thread.sleep(75);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         int AIChipCount = Integer.parseInt(AIChipField.getText()) + Integer.parseInt(potSizeField.getText());
+        int i = 1;
+        for (JTextField field : cardFields) {
+            if (i % 2 == 1 && !field.getText().isEmpty()) {
+                field.setBackground(Color.gray);
+                field.setText("");
+            }
+            i++;
+        }
         AIChipField.setText("" + AIChipCount);
-        potSizeField.setText("");   
+        potSizeField.setText("");
         drawButton.setVisible(true);
         foldButton.setVisible(false);
         checkButton.setVisible(false);
         betButton.setVisible(false);
+        messageField.setVisible(true);
+        messageField.setText("AI wins");
     }//GEN-LAST:event_foldButtonActionPerformed
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
         // TODO add your handling code here:
         try {
             Thread.sleep(75);
-        } catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        if (card10.getText().isEmpty()) {         
+        if (card10.getText().isEmpty()) {
             drawTwoCards();
         } else {
             handleTheEndOfHand();
-        }             
+        }
     }//GEN-LAST:event_checkButtonActionPerformed
 
     private void betButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_betButtonActionPerformed
         try {
             Thread.sleep(75);
-        } catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
         // TODO add your handling code here:
         int potSize = Integer.parseInt(potSizeField.getText());
         int AIChips = Integer.parseInt(AIChipField.getText());
         int playerChips = Integer.parseInt(playerChipField.getText());
-        int bet = Integer.parseInt(potSizeField.getText()) / 2;
+        int bet = Integer.parseInt(betButton.getText().replaceAll("[\\D]", ""));
         potSize += bet * 2;
         AIChips -= bet;
         playerChips -= bet;
         playerChipField.setText("" + playerChips);
         AIChipField.setText("" + AIChips);
         potSizeField.setText("" + potSize);
-        betButton.setText("Bet " + (potSize / 2));
-        if (card10.getText().isEmpty()) {                     
+        if (potSize / 2 > AIChips || potSize / 2 > playerChips) {
+            betButton.setText("Bet " + Math.min(AIChips, playerChips));
+        } else {
+            betButton.setText("Bet " + (potSize / 2));
+        }
+        if (Integer.parseInt(betButton.getText().replaceAll("[\\D]", "")) == 0) {
+            betButton.setVisible(false);
+            foldButton.setVisible(false);
+        }
+        if (card10.getText().isEmpty()) {
             drawTwoCards();
-        } else {          
+        } else {
             handleTheEndOfHand();
-        }  
+        }
     }//GEN-LAST:event_betButtonActionPerformed
 
     private void hiddenCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hiddenCardActionPerformed
@@ -381,101 +403,102 @@ public class CardStudGUI extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void handleTheEndOfHand() {    
-            try {
-                Thread.sleep(200);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            Card AICard1 = new Card(card2.getText());
-            Card AICard2 = new Card(card4.getText());
-            Card AICard3 = new Card(card6.getText());
-            Card AICard4 = new Card(card8.getText());
-            Card AICard5 = new Card(card10.getText());
-            Hand AIHand = new Hand(AICard1, AICard2, AICard3, AICard4, AICard5);
-            Card playerCard1 = new Card(card1.getText());
-            Card playerCard2 = new Card(card3.getText());
-            Card playerCard3 = new Card(card5.getText());
-            Card playerCard4 = new Card(card7.getText());
-            Card playerCard5 = new Card(card9.getText());
-            Hand playerHand = new Hand(playerCard1, playerCard2, playerCard3, playerCard4, playerCard5);    
-            messageField.setVisible(true);
-            if (playerHand.compareTo(AIHand) > 0) {
-                int playerChips = Integer.parseInt(playerChipField.getText());
-                playerChips += Integer.parseInt(potSizeField.getText());
-                playerChipField.setText("" + playerChips);
-                messageField.setText("Player wins");
-            } else if (playerHand.compareTo(AIHand) < 0) {
-                int AIChips = Integer.parseInt(AIChipField.getText());
-                AIChips += Integer.parseInt(potSizeField.getText());
-                AIChipField.setText("" + AIChips);
-                messageField.setText("AI wins");
-            } else {
-                int playerChips = Integer.parseInt(playerChipField.getText());
-                playerChips += Integer.parseInt(potSizeField.getText()) / 2;
-                playerChipField.setText("" + playerChips);
-                int AIChips = Integer.parseInt(AIChipField.getText());
-                AIChips += Integer.parseInt(potSizeField.getText()) / 2;
-                AIChipField.setText("" + AIChips);
-                messageField.setText("Tie");
-            }
-            hiddenCard.setText(card2.getText());
-            if (hiddenCard.getText().contains("Hearts")) {
-                hiddenCard.setForeground(Color.red);
-            } else if (hiddenCard.getText().contains("Diamonds")) {
-                hiddenCard.setForeground(Color.blue);
-            } else if (hiddenCard.getText().contains("Clubs")) {
-                hiddenCard.setForeground(Color.green);
-            } else {
-                hiddenCard.setForeground(Color.BLACK);
-            }
-            hiddenCard.setBackground(Color.WHITE);
-            card1.setBackground(Color.WHITE);        
-            betButton.setText("Bet 1");            
-            drawButton.setVisible(true);
-            foldButton.setVisible(false);
-            checkButton.setVisible(false);
-            betButton.setVisible(false);
+
+    public void handleTheEndOfHand() {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        Card AICard1 = new Card(card2.getText());
+        Card AICard2 = new Card(card4.getText());
+        Card AICard3 = new Card(card6.getText());
+        Card AICard4 = new Card(card8.getText());
+        Card AICard5 = new Card(card10.getText());
+        Hand AIHand = new Hand(AICard1, AICard2, AICard3, AICard4, AICard5);
+        Card playerCard1 = new Card(card1.getText());
+        Card playerCard2 = new Card(card3.getText());
+        Card playerCard3 = new Card(card5.getText());
+        Card playerCard4 = new Card(card7.getText());
+        Card playerCard5 = new Card(card9.getText());
+        Hand playerHand = new Hand(playerCard1, playerCard2, playerCard3, playerCard4, playerCard5);
+        messageField.setVisible(true);
+        if (playerHand.compareTo(AIHand) > 0) {
+            int playerChips = Integer.parseInt(playerChipField.getText());
+            playerChips += Integer.parseInt(potSizeField.getText());
+            potSizeField.setText("");
+            playerChipField.setText("" + playerChips);
+            messageField.setText("Player wins with " + playerHand.getRank());
+        } else if (playerHand.compareTo(AIHand) < 0) {
+            int AIChips = Integer.parseInt(AIChipField.getText());
+            AIChips += Integer.parseInt(potSizeField.getText());
+            potSizeField.setText("");
+            AIChipField.setText("" + AIChips);
+            messageField.setText("AI wins with " + AIHand.getRank());
+        } else {
+            int playerChips = Integer.parseInt(playerChipField.getText());
+            playerChips += Integer.parseInt(potSizeField.getText()) / 2;
+            playerChipField.setText("" + playerChips);
+            int AIChips = Integer.parseInt(AIChipField.getText());
+            AIChips += Integer.parseInt(potSizeField.getText()) / 2;
+            AIChipField.setText("" + AIChips);
+            messageField.setText("Tie");
+        }
+        hiddenCard.setText(card2.getText());
+        if (hiddenCard.getText().contains("Hearts")) {
+            hiddenCard.setForeground(Color.red);
+        } else if (hiddenCard.getText().contains("Diamonds")) {
+            hiddenCard.setForeground(Color.blue);
+        } else if (hiddenCard.getText().contains("Clubs")) {
+            hiddenCard.setForeground(Color.green);
+        } else {
+            hiddenCard.setForeground(Color.BLACK);
+        }
+        hiddenCard.setBackground(Color.WHITE);
+        card1.setBackground(Color.WHITE);
+        betButton.setText("Bet 1");
+        drawButton.setVisible(true);
+        foldButton.setVisible(false);
+        checkButton.setVisible(false);
+        betButton.setVisible(false);
+        if (Integer.parseInt(playerChipField.getText()) == 0) {
+            messageField.setText("You lost the game");
+            drawButton.setText("New game");
+        }
+        if (Integer.parseInt(AIChipField.getText()) == 0) {
+            messageField.setText("You won the game");
+            drawButton.setText("New game");
+        }
     }
-    
     public void drawTwoCards() {
         Deck deck = new Deck();
-            deck.shuffle();
-            ArrayList<String> usedCards = new ArrayList();
-            int i = 2;
-            for (JTextField field : cardFields) {
-                if (!field.getText().isEmpty()) {
-                    usedCards.add(field.getText());
-                } else {
-                    if (i > 0) {
-                        while (true) {
-                            Card card = deck.dealCard();
-                            if (!usedCards.contains(card.toString())) {
-                                field.setText(card.toString());
-                                break;
-                            }
-                        }                   
-                        i--;
+        deck.shuffle();
+        ArrayList<String> usedCards = new ArrayList();
+        int i = 2;
+        for (JTextField field : cardFields) {
+            if (!field.getText().isEmpty()) {
+                usedCards.add(field.getText());
+            } else if (i > 0) {
+                while (true) {
+                    Card card = deck.dealCard();
+                    if (!usedCards.contains(card.toString())) {
+                        field.setText(card.toString());
+                        break;
                     }
-                }   
-                if (field.getText().contains("Hearts")) {
-                    field.setForeground(Color.red);
-                } else if (field.getText().contains("Diamonds")) {
-                    field.setForeground(Color.blue);
-                } else if (field.getText().contains("Clubs")) {
-                    field.setForeground(Color.green);
-                } else {
-                    field.setForeground(Color.BLACK);
                 }
-                
+                i--;
             }
+            if (field.getText().contains("Hearts")) {
+                field.setForeground(Color.red);
+            } else if (field.getText().contains("Diamonds")) {
+                field.setForeground(Color.blue);
+            } else if (field.getText().contains("Clubs")) {
+                field.setForeground(Color.green);
+            } else {
+                field.setForeground(Color.BLACK);
+            }
+        }
     }
-    
-    public void setCardColor() {
-        
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AIChipField;
     private javax.swing.JButton betButton;

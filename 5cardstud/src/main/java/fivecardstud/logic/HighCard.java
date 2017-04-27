@@ -1,28 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fivecardstud.logic;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
- * @author Omistaja
+ * Hai.
  */
 public class HighCard implements Rank {
-    private ArrayList<Integer> values;
 
-    public HighCard (int value1, int value2, int value3, int value4, int value5) {
-        values = new ArrayList();
-        values.add(value1);
-        values.add(value2);
-        values.add(value3);
-        values.add(value4);
-        values.add(value5);
-    }   
+    private final ArrayList<Integer> values;
 
+    /**
+     * Lisää haipelin haikortit suuruusjärjestyksessä listaan.
+     *
+     * @param cards kortit joista käsi muodostuu
+     */
+    public HighCard(ArrayList<Card> cards) {
+        this.values = new ArrayList();
+        values.add(cards.get(4).getValue());
+        values.add(cards.get(3).getValue());
+        values.add(cards.get(2).getValue());
+        values.add(cards.get(1).getValue());
+        values.add(cards.get(0).getValue());
+    }
+
+    /**
+     * Palauttaa haipelin haikorttien arvot. Näillä voidaan vertailla haipeliä
+     * toisiin haipeleihin.
+     *
+     * @return haikorttien arvot
+     */
     public ArrayList<Integer> getValues() {
         return values;
     }
@@ -31,4 +39,24 @@ public class HighCard implements Rank {
     public int rankAsNumber() {
         return 1;
     }
+
+    @Override
+    public int compareTo(Rank r) {
+        if (rankAsNumber() != r.rankAsNumber()) {
+            return rankAsNumber() - r.rankAsNumber();
+        }
+        HighCard hc = (HighCard) r;
+        for (int i = 0; i < 5; i++) {
+            if (!Objects.equals(values.get(i), hc.getValues().get(i))) {
+                return values.get(i) - hc.getValues().get(i);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "High Card";
+    }
+
 }

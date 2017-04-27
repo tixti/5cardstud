@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package fivecardstud.logic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -11,10 +7,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-/**
- *
- * @author Omistaja
- */
 public class HandTest {
     
     @Test
@@ -304,6 +296,9 @@ public class HandTest {
         Hand hand = new Hand(c1, c2, c3, c4, c5);
         Pair p = (Pair)hand.getRank();
         assertTrue(p.getValueOfPair() == 11);
+        System.out.println(p.getKickers().get(0));
+        System.out.println(p.getKickers().get(1));
+        System.out.println(p.getKickers().get(2));
         assertTrue(p.getKickers().get(0) == 12);
         assertTrue(p.getKickers().get(1) == 10);
         assertTrue(p.getKickers().get(2) == 6);             

@@ -1,24 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fivecardstud.logic;
 
 /**
- *
- * @author Omistaja
+ * Normaalin 52 korttia sisältävän korttipakan kortti, jolla on arvo ja maa.
  */
 public class Card implements Comparable<Card> {
-         
+
     private final int value;
     private final int suit;
 
+    /**
+     * Luo kortin annetuilla maalla ja arvolla.
+     *
+     * @param value kortin arvo.
+     * @param suit kortin maa.
+     */
     public Card(int value, int suit) {
         this.value = value;
         this.suit = suit;
     }
 
+    /**
+     * Luo kortin annetusta tekstistä.
+     *
+     * @param cardAsText kortti tekstinä
+     */
     public Card(String cardAsText) {
         if (cardAsText.contains("Hearts")) {
             this.suit = 4;
@@ -57,8 +62,6 @@ public class Card implements Comparable<Card> {
             this.value = 2;
         }
     }
-    
-    
 
     @Override
     public String toString() {
@@ -67,26 +70,34 @@ public class Card implements Comparable<Card> {
             valueAsString = "" + value;
         } else {
             switch (value) {
-                case 14: valueAsString = "Ace";
-                break;
-                case 13: valueAsString = "King";
-                break;
-                case 12: valueAsString = "Queen";
-                break;
-                case 11: valueAsString = "Jack";
+                case 14:
+                    valueAsString = "Ace";
+                    break;
+                case 13:
+                    valueAsString = "King";
+                    break;
+                case 12:
+                    valueAsString = "Queen";
+                    break;
+                case 11:
+                    valueAsString = "Jack";
             }
         }
         String suitAsString = "";
         switch (suit) {
-            case 4: suitAsString = "Hearts";
-            break;
-            case 3: suitAsString = "Diamonds";
-            break;
-            case 2: suitAsString = "Clubs";
-            break;
-            case 1: suitAsString = "Spades";
+            case 4:
+                suitAsString = "Hearts";
+                break;
+            case 3:
+                suitAsString = "Diamonds";
+                break;
+            case 2:
+                suitAsString = "Clubs";
+                break;
+            case 1:
+                suitAsString = "Spades";
         }
-        
+
         return valueAsString + " of " + suitAsString;
     }
 
@@ -97,7 +108,8 @@ public class Card implements Comparable<Card> {
     public int getSuit() {
         return suit;
     }
-       
+
+    @Override
     public int compareTo(Card c) {
         if (c.getValue() < this.value) {
             return 1;
@@ -107,12 +119,4 @@ public class Card implements Comparable<Card> {
             return 0;
         }
     }
-
-
-    
-    
-    
-    
-    
-    
 }

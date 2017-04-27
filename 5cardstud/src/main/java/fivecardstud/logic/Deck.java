@@ -1,21 +1,19 @@
 package fivecardstud.logic;
 
-
-import fivecardstud.logic.Card;
-
 /**
- *  An object of type Deck represents a deck of playing cards.  The deck
- *  is a regular poker deck that contains 52 regular cards and that can
- *  also optionally include two Jokers.
+ * Pakka, joka pitää kirjaa käytetyistä korteista.
  */
 public class Deck {
 
     private Card[] deck;
     private int cardsUsed;
 
+    /**
+     * Luo 52 korttia sisältävän korttipakan.
+     */
     public Deck() {
         deck = new Card[52];
-        int i = 0; 
+        int i = 0;
         for (int suit = 1; suit < 5; suit++) {
             for (int value = 2; value < 15; value++) {
                 deck[i] = new Card(value, suit);
@@ -25,6 +23,9 @@ public class Deck {
         cardsUsed = 0;
     }
 
+    /**
+     * Metodi palauttaa kaikki käytetyt kortit pakkaan ja sekoittaa pakan.
+     */
     public void shuffle() {
         for (int i = deck.length - 1; i > 0; i--) {
             Card temp = deck[i];
@@ -35,10 +36,11 @@ public class Deck {
         cardsUsed = 0;
     }
 
-    public int cardsLeft() {
-        return deck.length - cardsUsed;
-    }
-
+    /**
+     * Nostaa kortin pakasta ja nostaa käytettyjen korttien määrää yhdellä.
+     *
+     * @return kortti pakasta.
+     */
     public Card dealCard() {
         cardsUsed++;
         return deck[cardsUsed - 1];
@@ -47,6 +49,5 @@ public class Deck {
     public Card[] getDeck() {
         return deck;
     }
-    
-    
-} 
+
+}
