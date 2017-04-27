@@ -10,3 +10,4 @@ Päivä | Tunnit | Kuvaus
 01.04.2017 | 5h | Lisää käsien vertaamisen logiikkaa
 02.04.2017 | 2h | Käyttöliittymän hiomista jotta peliä voi oikeasti pelata
 05.04.2017 | 0.5h | Raporttien generointi palautukseen, checkstylen ehdottamien virheiden korjaus
+27.04.2017 | 7h | Refaktorointia, pieniä korjauksia käyttöliittymään, javadocin kirjoittelua
