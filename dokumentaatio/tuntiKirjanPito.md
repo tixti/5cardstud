@@ -11,4 +11,4 @@ Päivä | Tunnit | Kuvaus
 02.04.2017 | 2h | Käyttöliittymän hiomista jotta peliä voi oikeasti pelata
 05.04.2017 | 0.5h | Raporttien generointi palautukseen, checkstylen ehdottamien virheiden korjaus
 27.04.2017 | 7h | Refaktorointia, pieniä korjauksia käyttöliittymään, javadocin kirjoittelua
-04.05.2017 | 5h | HTML-javadocin lisäys, taistelua JAR-filen saamisessa toimimaan tuloksetta
+04.05.2017 | 7h | HTML-javadocin lisäys, JAR-filen toimimaan saaminen
