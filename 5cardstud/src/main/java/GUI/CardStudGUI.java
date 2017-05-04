@@ -1,3 +1,5 @@
+package GUI;
+
 
 import fivecardstud.logic.Deck;
 import java.util.ArrayList;
@@ -253,8 +255,6 @@ public final class CardStudGUI extends javax.swing.JFrame {
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
 
-        Deck deck = new Deck();
-        deck.shuffle();
         for (JTextField f : cardFields) {
             f.setText("");
             f.setBackground(Color.white);
@@ -316,6 +316,7 @@ public final class CardStudGUI extends javax.swing.JFrame {
         betButton.setVisible(false);
         messageField.setVisible(true);
         messageField.setText("AI wins");
+        betButton.setText("Bet 1");
     }//GEN-LAST:event_foldButtonActionPerformed
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
